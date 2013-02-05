@@ -84,28 +84,12 @@
 // winsock library
 #pragma comment(lib, "ws2_32.lib")
 
-// DirectX
-#include "d3dx9.h"
-#pragma comment(lib, "d3dx9.lib")
-
 // zlib
-#include <zlib.h>
-#pragma comment(lib, "zdll.lib")
+#include <3dParty\zlib\include\zlib.h>
 
 // xml
-#include <tinyxml.h>
-#pragma comment(lib, "tinyxml.lib")
+#include <3dParty\TinyXML\include\tinyxml.h>
 
-// math
-#include <xnamath.h>
-
-// lua
-#include <LuaPlus/LuaLink.h>
-#include <LuaPlus/LuaPlus.h>
-#include <LuaPlus/LuaObject.h>
-#pragma comment(lib, "luaplus51-1201_debug.lib")
-
-using namespace LuaPlus;
 using namespace std;
 
 #include "Debug.h"
@@ -118,5 +102,6 @@ using namespace std;
 #include "StringHelper.h"
 #include "ZipFile.h"
 #include "Resource.h"
+
 
 #endif

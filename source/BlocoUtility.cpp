@@ -1,7 +1,10 @@
 // ClearEventManager.cpp : Defines the exported functions for the DLL application.
 //
-#include "BlocoUtility.h"
-
+// Windows6
+#include <Windows.h>
+#include <WindowsX.h>
+#pragma comment(lib, "winmm.lib" )
+#pragma comment(lib, "comctl32.lib" )
 
 BOOL APIENTRY DllMain( HMODULE hModule,
 	DWORD  ul_reason_for_call,

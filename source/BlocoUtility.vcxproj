@@ -20,12 +20,14 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -38,10 +40,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(BLOCO_HOME)\luaPlus\LuaPlus\Src;$(DXSDK_DIR)\Include;$(BLOCO_HOME)\zlib\include;$(BLOCO_HOME)\TinyXML\include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(BLOCO_HOME)\luaPlus\LuaPlus\build2010\bin.vs2010.win32;$(DXSDK_DIR)\Lib\x86;$(BLOCO_HOME)\zlib\lib;$(BLOCO_HOME)\TinyXML\lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(ProjectDir)$(Configuration)\</OutDir>
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(BLOCO_HOME)\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <OutDir>Output</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -57,12 +59,23 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(BLOCO_HOME)\3dParty\zlib\lib\Debug\zdll.lib;$(BLOCO_HOME)\3dParty\TinyXML\lib\Debug\tinyxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>robocopy $(OutDir) $(BLOCO_HOME)\$(ProjectName)\bin\$(Configuration)\ "*.dll" /PURGE
-robocopy $(OutDir) $(BLOCO_HOME)\$(ProjectName)\lib\$(Configuration)\ "*.lib" /PURGE
-robocopy $(ProjectDir) $(BLOCO_HOME)\$(ProjectName)\include "*.h" /PURGE /XD "$(OutDir)"
-</Command>
+      <Command>robocopy $(OutDir) ..\bin\$(Configuration) "*.dll" /PURGE
+robocopy $(OutDir) ..\lib\$(Configuration) "*.lib" /PURGE
+robocopy ..\source  ..\include "*.h" /PURGE
+
+robocopy $(OutDir) "$(BLOCO_HOME)\BlocoApi\bin" "*.dll" /PURGE
+robocopy $(OutDir) "$(BLOCO_HOME)\BlocoApi\lib" "*.lib" /PURGE
+robocopy ..\source  "$(BLOCO_HOME)\BlocoApi\include" "*.h" /PURGE
+
+if errorlevel 4 goto BuildEventFailed
+if errorlevel 0 goto end
+:BuildEventFailed echo FILECOPY for $(ProjectName) FAILED
+exit 1
+:end echo FILECOPY for $(ProjectName) COMPLETED OK
+exit 0</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -99,7 +112,6 @@ robocopy $(ProjectDir) $(BLOCO_HOME)\$(ProjectName)\include "*.h" /PURGE /XD "$(
     <ClInclude Include="Smoother.h" />
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="Templates.h" />
-    <ClInclude Include="Vec.h" />
     <ClInclude Include="ZipFile.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
